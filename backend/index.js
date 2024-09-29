@@ -45,6 +45,9 @@ mongoose
   })
   .catch((err) => console.log("Mongodb error!", err));
 
+app.get("/", (req, res) => {
+  res.send("Task manager server is running up and running");
+});
 app.get("/tasks", async (req, res) => {
   try {
     const tasks = await TaskManager.find();

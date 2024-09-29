@@ -9,8 +9,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const router = createBrowserRouter([
-  { path: "/", element: <App /> },
-  { path: "/login", element: <Login /> },
+  { path: "/", element: <Login /> },
+  { path: "/tasks", element: <App /> },
   { path: "/signup", element: <Signup /> },
 ]);
 root.render(
