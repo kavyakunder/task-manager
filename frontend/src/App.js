@@ -3,9 +3,11 @@ import { ALL_TASKS } from "./constants/taskConstant";
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import { useState } from "react";
+import AddTask from "./components/AddTask";
 
 function App() {
   const [allTask, setAllTasks] = useState(ALL_TASKS);
+  const [addTaskModal, setAddTaskModal] = useState(false);
   const todoTasks = allTask.filter((eachTask) => eachTask.status === "TODO");
   const inprogressTasks = allTask.filter(
     (eachTask) => eachTask.status === "IN PROGRESS"
@@ -26,14 +28,31 @@ function App() {
     const deletedTask = allTask.filter((eachTask) => eachTask.id !== id);
     setAllTasks(deletedTask);
   };
-  console.log("all", allTask);
+
+  const setOpenNewTaskModal = () => {
+    setAddTaskModal(!addTaskModal);
+  };
+  const addNewTask = (newTask) => {
+    console.log("newtasssssss", newTask);
+    console.log("this is addtask!");
+    setAllTasks((prev) => [...prev, newTask]);
+  };
+
   return (
     <>
       <Navbar />
-      <button className=" bg-blue-500 text-white px-12 py-2 mx-10 mt-8 rounded-md">
+      <button
+        className=" bg-blue-500 text-white px-12 py-2 mx-10 mt-8 rounded-md"
+        onClick={setOpenNewTaskModal}
+      >
         Add Task
       </button>
-
+      {addTaskModal && (
+        <AddTask
+          addNewTask={addNewTask}
+          setOpenNewTaskModal={setOpenNewTaskModal}
+        />
+      )}
       <div className="flex justify-between items-center m-10 border-b-2 border-x-2 p-4 rounded-md">
         <div>
           <span>Search: </span>
