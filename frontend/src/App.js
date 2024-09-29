@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 function App() {
   const [allTask, setAllTasks] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [addTaskModal, setAddTaskModal] = useState(false);
   const todoTasks = allTask.filter((eachTask) => eachTask.status === "TODO");
   const inprogressTasks = allTask.filter(
@@ -53,10 +54,12 @@ function App() {
       "https://task-manager-amber-six.vercel.app/tasks"
     );
     console.log("response is", response);
+    setLoading(false);
     setAllTasks(response.data);
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchTasksFromBackend();
   }, []);
 
@@ -112,62 +115,68 @@ function App() {
           </select>
         </div>
       </div>
-      <div className="flex gap-5 m-10">
-        <div
-          className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
-          onDragOver={onDragOver}
-          onDrop={(e) => onDrop(e, "TODO")}
-        >
-          <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
-            TODO
-          </h1>
-          {todoTasks.map((eachTask) => (
-            <Card
-              eachTask={eachTask}
-              key={eachTask._id}
-              removeTask={removeTask}
-              editTask={editTask}
-              onDragStart={onDragStart}
-            />
-          ))}
-        </div>
-        <div
-          className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
-          onDragOver={onDragOver}
-          onDrop={(e) => onDrop(e, "IN PROGRESS")}
-        >
-          <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
-            IN PROGRESS
-          </h1>
-          {inprogressTasks.map((eachTask) => (
-            <Card
-              eachTask={eachTask}
-              key={eachTask._id}
-              removeTask={removeTask}
-              editTask={editTask}
-              onDragStart={onDragStart}
-            />
-          ))}
-        </div>
-        <div
-          className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
-          onDragOver={onDragOver}
-          onDrop={(e) => onDrop(e, "DONE")}
-        >
-          <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
-            DONE
-          </h1>
-          {doneTasks.map((eachTask) => (
-            <Card
-              eachTask={eachTask}
-              key={eachTask._id}
-              removeTask={removeTask}
-              editTask={editTask}
-              onDragStart={onDragStart}
-            />
-          ))}
-        </div>
-      </div>
+      {loading ? (
+        <p className="text-lg font-bold text-center">Fetching...</p>
+      ) : (
+        <>
+          <div className="flex gap-5 m-10">
+            <div
+              className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, "TODO")}
+            >
+              <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
+                TODO
+              </h1>
+              {todoTasks.map((eachTask) => (
+                <Card
+                  eachTask={eachTask}
+                  key={eachTask._id}
+                  removeTask={removeTask}
+                  editTask={editTask}
+                  onDragStart={onDragStart}
+                />
+              ))}
+            </div>
+            <div
+              className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, "IN PROGRESS")}
+            >
+              <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
+                IN PROGRESS
+              </h1>
+              {inprogressTasks.map((eachTask) => (
+                <Card
+                  eachTask={eachTask}
+                  key={eachTask._id}
+                  removeTask={removeTask}
+                  editTask={editTask}
+                  onDragStart={onDragStart}
+                />
+              ))}
+            </div>
+            <div
+              className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
+              onDragOver={onDragOver}
+              onDrop={(e) => onDrop(e, "DONE")}
+            >
+              <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
+                DONE
+              </h1>
+              {doneTasks.map((eachTask) => (
+                <Card
+                  eachTask={eachTask}
+                  key={eachTask._id}
+                  removeTask={removeTask}
+                  editTask={editTask}
+                  onDragStart={onDragStart}
+                />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
       <Toaster />
     </>
   );
