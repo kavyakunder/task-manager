@@ -1,3 +1,8 @@
+
+
+
+
+
 # Task Manager Application
 
 This is a task manager application built using the MERN stack (MongoDB, Express.js, React, Node.js). The application allows users to create, read, update, and delete tasks, making it easy to manage tasks efficiently.
@@ -26,7 +31,7 @@ This is a task manager application built using the MERN stack (MongoDB, Express.
 
 ### Clone the Repository
 
-```
+
 git clone https://github.com/yourusername/task-manager.git
 cd task-manager
 Backend Setup
@@ -64,3 +69,6 @@ Start the React application:
 
 
 npm start
+
+
+https://github.com/user-attachments/assets/f56acc8f-78ec-414a-a500-1c9f72fa2bc1
