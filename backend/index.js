@@ -2,6 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const app = express();
+
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const ALL_TASKS = require("./taskConstant");
 
 app.use(express.json());
@@ -31,7 +36,7 @@ const taskSchema = new mongoose.Schema({
 const TaskManager = mongoose.model("task", taskSchema);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/taskManager")
+  .connect(process.env.MONGO_URL)
   .then(async () => {
     console.log("MongoDB connected!");
 
@@ -106,3 +111,6 @@ app.put("/edit-task/:id", async (req, res) => {
 app.listen(5000, () => {
   console.log("Server started running on port 5000!");
 });
+
+// kavyakunder09;
+// 2BRMZXScalBD8jEW
