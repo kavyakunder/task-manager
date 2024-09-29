@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function EditModal({ isOpen, onClose, task, editTask }) {
   const [editTaskData, setEditTaskData] = useState({
@@ -7,19 +9,34 @@ function EditModal({ isOpen, onClose, task, editTask }) {
   });
 
   function handleEditTask(e) {
-    console.log("E", e);
     const { name, value } = e.target;
-    console.log("xjshdchs", name, value);
     setEditTaskData((prev) => {
       return { ...prev, [name]: value };
     });
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     console.log("xdlass", { ...task, ...editTask });
-    editTask({ ...task, ...editTaskData });
+
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/edit-task/${task._id}`,
+        editTaskData
+      );
+      console.log("eeerrrr", response.data.updatedTask);
+      editTask(response.data.updatedTask);
+      toast.success(response.data.message);
+    } catch (err) {
+      console.log("Err is", err);
+      const errorMessage =
+        err.response?.data?.message || "Failed to update task";
+
+      toast.error(errorMessage); // D
+    }
+
     onClose();
   };
+
   const handleCancel = () => {
     onClose();
   };

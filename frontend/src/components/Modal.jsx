@@ -10,6 +10,7 @@ function Modal({ isOpen, onClose, task }) {
           <h1 className="text-xl font-bold mb-4">Task Details</h1>
           <h2 className="text-lg font-bold">Title: {task.taskName}</h2>
           <p>Description: {task.description}</p>
+          <p>Status: {task.status}</p>
           <p className="mt-5">Created at: {task.createdAt}</p>
         </div>
         <div className="flex justify-end mt-4">

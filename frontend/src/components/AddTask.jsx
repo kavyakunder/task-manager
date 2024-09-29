@@ -1,14 +1,15 @@
 import React, { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 function AddTask({ addNewTask, setOpenNewTaskModal }) {
   const [addTaskData, setAddTaskData] = useState({
     taskName: "",
     description: "",
-    status: "",
+    status: "TODO",
   });
 
   function handleOnChangeTask(e) {
-    console.log("event is", e.target.value, e.target.name);
     const { name, value } = e.target;
     setAddTaskData((prev) => {
       console.log("prev", prev, addTaskData);
@@ -22,10 +23,27 @@ function AddTask({ addNewTask, setOpenNewTaskModal }) {
     });
   }
 
-  function handleAddTask() {
-    addNewTask(addTaskData);
-    setOpenNewTaskModal();
-  }
+  const handleAddTask = async (e) => {
+    console.log("inside handleaddtask!");
+    // addNewTask(addTaskData);
+    // setOpenNewTaskModal();
+    console.log("newtask", addTaskData);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/new-task",
+        addTaskData
+      );
+      console.log("respo", response);
+      addNewTask(response.data.task);
+      toast.success(response.data.message);
+      setOpenNewTaskModal();
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.message || "Failed to update task";
+
+      toast.error(errorMessage);
+    }
+  };
 
   function handleCancel() {
     setOpenNewTaskModal();

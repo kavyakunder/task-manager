@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "./Modal";
 import EditModal from "./EditModal";
-function Card({ eachTask, removeTask, editTask }) {
+function Card({ eachTask, removeTask, editTask, onDragStart }) {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const handleViewDetails = () => {
@@ -21,14 +21,19 @@ function Card({ eachTask, removeTask, editTask }) {
   };
   return (
     <>
-      <div className="bg-blue-200 p-5 rounded-md" key={eachTask.id}>
+      <div
+        className="bg-blue-200 p-5 rounded-md"
+        key={eachTask.id}
+        draggable
+        onDragStart={(e) => onDragStart(e, eachTask)}
+      >
         <h2 className="text-lg font-bold">{eachTask.taskName}</h2>
         <p>{eachTask.description}</p>
         <p className="mt-5">Created at: {eachTask.createdAt}</p>
         <div className="flex justify-end gap-2 mt-4">
           <button
             className="bg-red-400 text-white p-2 rounded-md"
-            onClick={() => removeTask(eachTask.id)}
+            onClick={() => removeTask(eachTask._id)}
           >
             Delete
           </button>

@@ -1,12 +1,14 @@
 import "./App.css";
-import { ALL_TASKS } from "./constants/taskConstant";
+// import { ALL_TASKS } from "./constants/taskConstant";
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddTask from "./components/AddTask";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
 
 function App() {
-  const [allTask, setAllTasks] = useState(ALL_TASKS);
+  const [allTask, setAllTasks] = useState([]);
   const [addTaskModal, setAddTaskModal] = useState(false);
   const todoTasks = allTask.filter((eachTask) => eachTask.status === "TODO");
   const inprogressTasks = allTask.filter(
@@ -20,12 +22,20 @@ function App() {
     setAllTasks((prev) => {
       console.log("prev", prev, updatedTask);
       return prev.map((allPrevTask) =>
-        allPrevTask.id === updatedTask.id ? updatedTask : allPrevTask
+        allPrevTask._id === updatedTask._id ? updatedTask : allPrevTask
       );
     });
   };
-  const removeTask = (id) => {
-    const deletedTask = allTask.filter((eachTask) => eachTask.id !== id);
+  const removeTask = async (id) => {
+    console.log("inssside dlete", id);
+    const response = await axios.delete(
+      `http://localhost:5000/delete-task/${id}`
+    );
+    console.log("response is here thisss", response);
+
+    toast.success(response.data.message);
+    const deletedTask = allTask.filter((eachTask) => eachTask._id !== id);
+    console.log("allsd", deletedTask);
     setAllTasks(deletedTask);
   };
 
@@ -38,6 +48,36 @@ function App() {
     setAllTasks((prev) => [...prev, newTask]);
   };
 
+  const fetchTasksFromBackend = async () => {
+    const response = await axios.get("http://localhost:5000/tasks");
+    console.log("response is", response);
+    setAllTasks(response.data);
+  };
+
+  useEffect(() => {
+    fetchTasksFromBackend();
+  }, []);
+
+  const onDragStart = (e, id) => {
+    console.log(" e isss", e, id._id);
+    e.dataTransfer.setData("text/plain", id._id);
+  };
+
+  const onDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const onDrop = async (e, status) => {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("text/plain");
+    console.log("by id", id);
+    const task = allTask.find((t) => t._id === id);
+    console.log("tassk", allTask, task);
+    if (task && task.status !== status) {
+      const updatedTask = { ...task, status };
+      await editTask(updatedTask);
+    }
+  };
   return (
     <>
       <Navbar />
@@ -70,47 +110,63 @@ function App() {
           </select>
         </div>
       </div>
-      <div className="flex gap-5 m-10 ">
-        <div className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4">
+      <div className="flex gap-5 m-10">
+        <div
+          className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
+          onDragOver={onDragOver}
+          onDrop={(e) => onDrop(e, "TODO")}
+        >
           <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
             TODO
           </h1>
           {todoTasks.map((eachTask) => (
             <Card
               eachTask={eachTask}
-              key={eachTask.id}
+              key={eachTask._id}
               removeTask={removeTask}
               editTask={editTask}
+              onDragStart={onDragStart}
             />
           ))}
         </div>
-        <div className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4">
+        <div
+          className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
+          onDragOver={onDragOver}
+          onDrop={(e) => onDrop(e, "IN PROGRESS")}
+        >
           <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
             IN PROGRESS
           </h1>
           {inprogressTasks.map((eachTask) => (
             <Card
               eachTask={eachTask}
-              key={eachTask.id}
+              key={eachTask._id}
               removeTask={removeTask}
               editTask={editTask}
+              onDragStart={onDragStart}
             />
           ))}
         </div>
-        <div className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4">
+        <div
+          className="flex flex-col basis-1/3 gap-6 border-2 border-slate-200 rounded-md p-4"
+          onDragOver={onDragOver}
+          onDrop={(e) => onDrop(e, "DONE")}
+        >
           <h1 className="bg-blue-500 text-white text-lg p-1 font-semibold">
             DONE
           </h1>
           {doneTasks.map((eachTask) => (
             <Card
               eachTask={eachTask}
-              key={eachTask.id}
+              key={eachTask._id}
               removeTask={removeTask}
               editTask={editTask}
+              onDragStart={onDragStart}
             />
           ))}
         </div>
       </div>
+      <Toaster />
     </>
   );
 }
