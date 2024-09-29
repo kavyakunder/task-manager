@@ -5,8 +5,8 @@ import { faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
 import { database } from "../firebase/firebaseconfig";
 import toast, { Toaster } from "react-hot-toast";
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
+
 function Signup() {
   const history = useNavigate();
   const handleSubmit = (e) => {
@@ -15,25 +15,25 @@ function Signup() {
 
     const email = e.target.email.value;
     const password = e.target.password.value;
-    createUserWithEmailAndPassword(database, email, password)
-      .then((data) => {
-        // console.log("dataa", data);
-        // toast.success("Signup successful! Redirecting to tasks...");
+    // createUserWithEmailAndPassword(database, email, password)
+    //   .then((data) => {
+    //     // console.log("dataa", data);
+    //     // toast.success("Signup successful! Redirecting to tasks...");
 
-        toast.success("Signup successful!", {
-          duration: 3000, // Display toast for 5 seconds
-          position: "top-center", // Show at the top-center
-        });
-        // history("/tasks");
+    //     toast.success("Signup successful!", {
+    //       duration: 3000, // Display toast for 5 seconds
+    //       position: "top-center", // Show at the top-center
+    //     });
+    //     // history("/tasks");
 
-        setTimeout(() => {
-          history("/tasks");
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log("error", err);
-        toast.error("Signup failed"); // Show error toast
-      });
+    //     setTimeout(() => {
+    //       history("/tasks");
+    //     }, 1000);
+    //   })
+    //   .catch((err) => {
+    //     console.log("error", err);
+    //     toast.error("Signup failed"); // Show error toast
+    //   });
   };
   return (
     <>

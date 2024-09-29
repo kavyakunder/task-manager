@@ -13,21 +13,21 @@ function Login() {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    signInWithEmailAndPassword(database, email, password)
-      .then((data) => {
-        console.log("dtaa", data);
-        toast.success("Signup successful!", {
-          duration: 3000,
-          position: "top-center",
-        });
-        setTimeout(() => {
-          history("/tasks");
-        }, 1000);
-      })
-      .catch((err) => {
-        console.log("Err", err);
-        toast.error("Login was unsuccessful!,Try again!");
-      });
+    // signInWithEmailAndPassword(database, email, password)
+    //   .then((data) => {
+    //     console.log("dtaa", data);
+    //     toast.success("Signup successful!", {
+    //       duration: 3000,
+    //       position: "top-center",
+    //     });
+    //     setTimeout(() => {
+    //       history("/tasks");
+    //     }, 1000);
+    //   })
+    //   .catch((err) => {
+    //     console.log("Err", err);
+    //     toast.error("Login was unsuccessful!,Try again!");
+    //   });
   };
   return (
     <>
