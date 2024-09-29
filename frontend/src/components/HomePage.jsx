@@ -29,7 +29,7 @@ function TaskComponent() {
   const removeTask = async (id) => {
     console.log("inssside dlete", id);
     const response = await axios.delete(
-      `http://localhost:5000/delete-task/${id}`
+      `https://task-manager-amber-six.vercel.app/delete-task/${id}`
     );
     console.log("response is here thisss", response);
 
@@ -49,7 +49,9 @@ function TaskComponent() {
   };
 
   const fetchTasksFromBackend = async () => {
-    const response = await axios.get("http://localhost:5000/tasks");
+    const response = await axios.get(
+      "https://task-manager-amber-six.vercel.app/tasks"
+    );
     console.log("response is", response);
     setAllTasks(response.data);
   };

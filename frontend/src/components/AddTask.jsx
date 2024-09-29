@@ -30,7 +30,7 @@ function AddTask({ addNewTask, setOpenNewTaskModal }) {
     console.log("newtask", addTaskData);
     try {
       const response = await axios.post(
-        "http://localhost:5000/new-task",
+        "https://task-manager-amber-six.vercel.app/new-task",
         addTaskData
       );
       console.log("respo", response);

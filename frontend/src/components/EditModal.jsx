@@ -20,7 +20,7 @@ function EditModal({ isOpen, onClose, task, editTask }) {
 
     try {
       const response = await axios.put(
-        `http://localhost:5000/edit-task/${task._id}`,
+        `https://task-manager-amber-six.vercel.app/edit-task/${task._id}`,
         editTaskData
       );
       console.log("eeerrrr", response.data.updatedTask);
