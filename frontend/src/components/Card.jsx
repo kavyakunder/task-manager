@@ -38,7 +38,7 @@ function Card({ eachTask, removeTask, editTask, onDragStart }) {
             Delete
           </button>
           <button
-            className="bg-blue-400 text-white p-2  rounded-md"
+            className="bg-[#3273F5] text-white p-2  rounded-md"
             onClick={handleEditOpenModal}
           >
             Edit{" "}
